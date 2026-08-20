@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(docker exec orderflow-postgres psql -U postgres -l)"
+    ]
+  }
+}

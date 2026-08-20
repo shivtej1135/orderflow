@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS inventory(
+    id SERIAL PRIMARY KEY,
+    product_id INTEGER NOT NULL UNIQUE,
+    quantity INTEGER NOT NULL CHECK (quantity >= 0),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
