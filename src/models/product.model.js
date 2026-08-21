@@ -42,6 +42,20 @@ const findProductById = async (id) => {
     }
 };
 
+const findProductByIdTx = async (client, id) => { // for transaction to create order
+    try {
+        const result = await client.query(
+            `SELECT * FROM products
+             WHERE id = $1`,
+            [id]
+        );
+
+        return result.rows[0];
+    } catch (err) {
+        throw err;
+    }
+};
+
 const updateProduct = async (id, { name, description, price }) => {
     try {
         const result = await pool.query(
@@ -81,5 +95,6 @@ export {
     findAllProducts,
     findProductById,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    findProductByIdTx
 };

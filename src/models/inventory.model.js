@@ -14,6 +14,21 @@ const getInventoryByProductId = async (productId) => {
     }
 };
 
+const getInventoryByProductIdTx = async (client, productId) => { //for creating order
+    try {
+        const result = await client.query(
+            `SELECT *
+             FROM inventory
+             WHERE product_id = $1`,
+            [productId]
+        );
+
+        return result.rows[0];
+    } catch (err) {
+        throw err;
+    }
+};
+
 const updateInventory = async (productId, quantity) => {
     try {
         const result = await pool.query(
@@ -31,5 +46,24 @@ const updateInventory = async (productId, quantity) => {
     }
 };
 
+const updateInventoryTx = async (client,productId,quantity) => {
+    try {
+        const result = await client.query(
+            `UPDATE inventory
+             SET quantity = $1,
+                 updated_at = CURRENT_TIMESTAMP
+             WHERE product_id = $2
+             RETURNING *`,
+            [quantity, productId]
+        );
 
-export { getInventoryByProductId,updateInventory };
+        return result.rows[0];
+    } catch (err) {
+        throw err;
+    }
+};
+
+
+
+
+export { getInventoryByProductId,updateInventory,getInventoryByProductIdTx,updateInventoryTx };
