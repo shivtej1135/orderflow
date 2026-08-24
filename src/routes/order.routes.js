@@ -1,5 +1,5 @@
 import express from "express";
-
+import { idempotencyMiddleware } from "../middlewares/idempotency.middleware.js";
 import {
     createOrderController,
     getOrdersController,
@@ -8,7 +8,7 @@ import {
 
 import { verifyToken } from "../middlewares/auth.middleware.js";
 const router = express.Router();
-router.post("/", verifyToken, createOrderController);
+router.post("/", verifyToken,idempotencyMiddleware, createOrderController);
 router.get("/", verifyToken, getOrdersController);
 router.get("/:id", verifyToken, getOrderByIdController);
 

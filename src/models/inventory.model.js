@@ -18,8 +18,9 @@ const getInventoryByProductIdTx = async (client, productId) => { //for creating 
     try {
         const result = await client.query(
             `SELECT *
-             FROM inventory
-             WHERE product_id = $1`,
+            FROM inventory
+            WHERE product_id = $1
+            FOR UPDATE`,
             [productId]
         );
 

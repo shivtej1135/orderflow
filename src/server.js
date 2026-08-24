@@ -3,6 +3,7 @@ import app from "./app.js";
 import redisClient from "./config/redis.js";
 import pool from "./config/db.js";
 
+
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
