@@ -47,8 +47,26 @@ const getOrderById = async (orderId) => {
     }
 };
 
+const updateOrderStatus = async (orderId,status) => {
+    try {
+        const result = await pool.query(
+            `UPDATE orders
+             SET status = $1,
+                 updated_at = NOW()
+             WHERE id = $2
+             RETURNING *`,
+            [status, orderId]
+        );
+
+        return result.rows[0];
+    } catch (err) {
+        throw err;
+    }
+};
+
 export {
     createOrder,
     getOrdersByUserId,
-    getOrderById
+    getOrderById,
+    updateOrderStatus
 };

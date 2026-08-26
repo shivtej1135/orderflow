@@ -1,7 +1,7 @@
 import AppError from "../utils/errors.js";
 import pool from "../config/db.js";
-import { createOrder } from "../models/order.model.js";
-import { createOrderItem } from "../models/orderItem.model.js";
+import { createOrder,updateOrderStatus,getOrderById } from "../models/order.model.js";
+import { createOrderItem,getOrderItemsByOrderId } from "../models/orderItem.model.js";
 
 import { findProductByIdTx} from "../models/product.model.js";
 import { getInventoryByProductIdTx,updateInventoryTx } from "../models/inventory.model.js";
@@ -114,4 +114,13 @@ const getOrderByIdService = async (orderId) => {
     }
 };
 
-export {createOrderService,getOrdersByUserIdService,getOrderByIdService};
+const updateOrderStatusService = async (orderId,status) => {
+    try {
+        const order = await updateOrderStatus(orderId,status);
+        return order;
+    } catch (err) {
+        throw err;
+    }
+};
+
+export {createOrderService,getOrdersByUserIdService,getOrderByIdService,updateOrderStatusService};

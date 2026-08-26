@@ -15,4 +15,19 @@ const createOrderItem = async (client,orderId,productId,quantity,unitPrice) => {
     }
 };
 
-export{createOrderItem};
+const getOrderItemsByOrderId = async (orderId) => {
+    try {
+        const result = await pool.query(
+            `SELECT *
+             FROM order_items
+             WHERE order_id = $1`,
+            [orderId]
+        );
+
+        return result.rows;
+    } catch (err) {
+        throw err;
+    }
+};
+
+export{createOrderItem,getOrderItemsByOrderId};

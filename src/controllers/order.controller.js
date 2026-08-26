@@ -1,6 +1,7 @@
 import { createOrderService,getOrdersByUserIdService,getOrderByIdService } from "../services/order.service.js";
 import { saveIdempotencyResult } from "../services/idempotency.service.js";
 import redisClient from "../config/redis.js";
+import orderQueue from "../queues/order.queue.js";
 
 
 const createOrderController = async (req, res, next) => {
@@ -8,7 +9,19 @@ const createOrderController = async (req, res, next) => {
         const order = await createOrderService(req.user.id, req.body.items);
 
         // Store successful result in Redis
-        await saveIdempotencyResult(req.idempotencyKey,req.requestHash,order); // if there is any error in createOrderService then directly catch with work
+        await saveIdempotencyResult(req.idempotencyKey,req.requestHash,order); // if there is any error in createOrderService then directly catch will work
+        console.log(`Adding job for order ${order.id}`);
+        // Add payment processing job to BullMQ
+        await orderQueue.add("process-payment",{orderId: order.id},
+        {
+            attempts: 3,
+            backoff: {
+                type: "exponential",
+                delay: 2000
+            }
+        }
+);
+console.log(`Job added for order ${order.id}`);
 
         res.status(201).json(order);
         
