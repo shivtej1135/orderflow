@@ -58,6 +58,7 @@ console.log("DB Password:", existingUser.password);
             refreshToken: refreshTokenData.refreshToken
         };
     } catch (err) {
+        console.log("LOGIN ERROR:", err);
         throw err;
     }
 };

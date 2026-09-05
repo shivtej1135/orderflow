@@ -18,6 +18,7 @@ const createProductController = async (req, res, next) => {
 
         res.status(201).json(product);
     } catch (err) {
+        console.log("CREATE PRODUCT ERROR:", err);
         next(err);
     }
 };

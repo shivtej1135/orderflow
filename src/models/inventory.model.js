@@ -1,5 +1,23 @@
 import pool from "../config/db.js";
 
+const createInventory = async (productId, quantity = 0) => {
+    try {
+        const result = await pool.query(
+            `INSERT INTO inventory (
+                product_id,
+                quantity
+            )
+            VALUES ($1, $2)
+            RETURNING *`,
+            [productId, quantity]
+        );
+        console.log("CREATE INVENTORY RESULT:", result.rows[0]);
+        return result.rows[0];
+    } catch (err) {
+        throw err;
+    }
+};
+
 const getInventoryByProductId = async (productId) => {
     try {
         const result = await pool.query(
@@ -67,4 +85,4 @@ const updateInventoryTx = async (client,productId,quantity) => {
 
 
 
-export { getInventoryByProductId,updateInventory,getInventoryByProductIdTx,updateInventoryTx };
+export { getInventoryByProductId,updateInventory,getInventoryByProductIdTx,updateInventoryTx ,createInventory};

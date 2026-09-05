@@ -22,7 +22,9 @@ const setCached = async (key, value, ttl = 300) => {
 
 // Delete cache key
 const invalidate = async (key) => {
+    console.log("BEFORE INVALIDATE");
     await redisClient.del(key);
+    console.log("AFTER INVALIDATE");
 };
 
 export {getCached,setCached,invalidate};

@@ -5,7 +5,7 @@ import {
     updateProduct,
     deleteProduct
 } from "../models/product.model.js";
-
+import { createInventory } from "../models/inventory.model.js";
 import AppError from "../utils/errors.js";
 
 const createProductService = async ({ name, description, price }) => {
@@ -15,6 +15,9 @@ const createProductService = async ({ name, description, price }) => {
             description,
             price
         });
+        console.log("PRODUCT CREATED:", product);
+        await createInventory(product.id, 0);
+       
 
         return product;
     } catch (err) {
